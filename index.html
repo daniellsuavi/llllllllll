@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz: Qual é a sua Profissão Ideal?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #EEF2FF;
+            --accent: #06B6D4;
+            --bg-gradient-1: #6366F1;
+            --bg-gradient-2: #A855F7;
+            --bg-gradient-3: #EC4899;
+            --card-bg: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+            --border-color: #E5E7EB;
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3));
+            background-size: 200% 200%;
+            animation: gradientBG 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--text-main);
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .quiz-container {
+            width: 100%;
+            max-width: 680px;
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .intro-screen {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .intro-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .intro-screen h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #111827;
+            line-height: 1.2;
+        }
+
+        .intro-screen p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            padding: 16px 36px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -5px rgba(79, 70, 229, 0.4);
+            filter: brightness(1.05);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .quiz-screen {
+            display: none;
+        }
+
+        .quiz-header {
+            margin-bottom: 28px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 10px;
+            background: #F3F4F6;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
+        .question-title {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 24px;
+            line-height: 1.4;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option-card {
+            background: #F9FAFB;
+            border: 2px solid var(--border-color);
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        .option-card:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            transform: translateX(4px);
+        }
+
+        .option-card.selected {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .option-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #D1D5DB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: transparent;
+            transition: var(--transition);
+        }
+
+        .option-card:hover .option-icon {
+            border-color: var(--primary);
+        }
+
+        .option-card.selected .option-icon {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .result-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .result-badge {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .result-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .result-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 24px;
+            font-size: 1rem;
+            text-align: justify;
+        }
+
+        .careers-box {
+            background: #F9FAFB;
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
+
+        .careers-box h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .career-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .career-tag {
+            background: white;
+            border: 1px solid #D1D5DB;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: #4B5563;
+        }
+
+        .breakdown-title {
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 16px;
+        }
+
+        .category-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 32px;
+        }
+
+        .cat-bar-item {
+            text-align: left;
+        }
+
+        .cat-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .cat-progress-bg {
+            height: 8px;
+            background: #E5E7EB;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .cat-progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            width: 0%;
+            transition: width 1s ease-out;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 640px) {
+            .quiz-container {
+                padding: 24px;
+            }
+
+            .intro-screen h1 {
+                font-size: 1.75rem;
+            }
+
+            .question-title {
+                font-size: 1.15rem;
+            }
+
+            .result-title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div id="intro-screen" class="intro-screen fade-in">
+            <div class="intro-icon">
+                <i class="fa-solid fa-compass"></i>
+            </div>
+            <h1>Descubra sua Profissão Ideal</h1>
+            <p>Responda a 8 perguntas rápidas e descubra qual área profissional e carreiras combinam melhor com sua personalidade e habilidades.</p>
+            <button class="btn" onclick="startQuiz()">
+                Iniciar Quiz <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <div id="quiz-screen" class="quiz-screen">
+            <div class="quiz-header">
+                <div class="progress-info">
+                    <span id="question-number">Pergunta 1 de 8</span>
+                    <span id="progress-percent">12%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="progress-bar-fill" class="progress-bar-fill"></div>
+                </div>
+            </div>
+
+            <h2 id="question-title" class="question-title">Carregando pergunta...</h2>
+
+            <div id="options-list" class="options-list"></div>
+        </div>
+
+        <div id="result-screen" class="result-screen">
+            <span class="result-badge">Seu Perfil Principal</span>
+            <h2 id="result-title" class="result-title">Título do Resultado</h2>
+            <p id="result-description" class="result-description">Descrição detalhada do perfil do usuário...</p>
+
+            <div class="careers-box">
+                <h4><i class="fa-solid fa-briefcase"></i> Sugestões de Carreiras:</h4>
+                <div id="career-tags" class="career-tags"></div>
+            </div>
+
+            <h3 class="breakdown-title">Nível de Compatibilidade por Área</h3>
+            <div id="category-bars" class="category-bars"></div>
+
+            <button class="btn" onclick="restartQuiz()">
+                <i class="fa-solid fa-rotate-right"></i> Refazer Quiz
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                title: "Como você prefere resolver um problema complexo no trabalho?",
+                options: [
+                    { text: "Analisando dados, números e buscando soluções lógicas.", category: "tec" },
+                    { text: "Criando algo novo e pensando em alternativas fora da caixa.", category: "cri" },
+                    { text: "Conversando com as pessoas para entender o impacto no grupo.", category: "soc" },
+                    { text: "Definindo uma estratégia rápida e delegando tarefas.", category: "neg" }
+                ]
+            },
+            {
+                title: "Qual dessas atividades traz mais satisfação no seu dia a dia?",
+                options: [
+                    { text: "Descobrir como um sistema funciona ou otimizar um processo.", category: "tec" },
+                    { text: "Desenhar, escrever, projetar ou expressar ideias visualmente.", category: "cri" },
+                    { text: "Ajudar alguém a aprender algo novo ou resolver um conflito.", category: "soc" },
+                    { text: "Negociar, fechar acordos ou atingir metas desafiadoras.", category: "neg" }
+                ]
+            },
+            {
+                title: "Como seria o seu ambiente de trabalho ideal?",
+                options: [
+                    { text: "Silencioso, altamente focado, com boas ferramentas de tecnologia.", category: "tec" },
+                    { text: "Inspirador, flexível, com liberdade para experimentar.", category: "cri" },
+                    { text: "Acolhedor, colaborativo e voltado para interação com pessoas.", category: "soc" },
+                    { text: "Dinâmico, focado em resultados, com oportunidades de crescimento.", category: "neg" }
+                ]
+            },
+            {
+                title: "O que seus amigos e colegas costumam mais elogiar em você?",
+                options: [
+                    { text: "Sua raciocínio lógico e precisão com detalhes.", category: "tec" },
+                    { text: "Sua imaginação, bom gosto e originalidade.", category: "cri" },
+                    { text: "Sua empatia, paciência e habilidade para ouvir.", category: "soc" },
+                    { text: "Sua autoconfiança, capacidade de decisão e visão.", category: "neg" }
+                ]
+            },
+            {
+                title: "Em um projeto em equipe, qual papel você naturalmente assume?",
+                options: [
+                    { text: "O especialista técnico que garante que tudo vai funcionar.", category: "tec" },
+                    { text: "O designer/idealizador que dá forma e estilo ao projeto.", category: "cri" },
+                    { text: "O mediador que garante a harmonia e bem-estar do grupo.", category: "soc" },
+                    { text: "O líder que organiza prazos, recursos e objetivos finais.", category: "neg" }
+                ]
+            },
+            {
+                title: "Qual assunto desperta mais o seu interesse em ler ou assistir vídeos?",
+                options: [
+                    { text: "Ciência, novas tecnologias, inteligência artificial ou dados.", category: "tec" },
+                    { text: "Arte, arquitetura, cinema, literatura ou design.", category: "cri" },
+                    { text: "Psicologia, saúde, impacto social ou educação.", category: "soc" },
+                    { text: "Empreendedorismo, economia, marketing ou investimentos.", category: "neg" }
+                ]
+            },
+            {
+                title: "Qual o seu maior objetivo profissional a longo prazo?",
+                options: [
+                    { text: "Ser uma referência de conhecimento técnico ou científico.", category: "tec" },
+                    { text: "Impactar o mundo criando obras ou produtos únicos.", category: "cri" },
+                    { text: "Fazer uma diferença real na vida e no bem-estar das pessoas.", category: "soc" },
+                    { text: "Construir um negócio de sucesso ou liderar uma grande empresa.", category: "neg" }
+                ]
+            },
+            {
+                title: "Frente a uma grande mudança de planos, qual é sua reação?",
+                options: [
+                    { text: "Analiso os fatos friamente e recalculo o plano com lógica.", category: "tec" },
+                    { text: "Vejo como uma oportunidade para inventar algo totalmente novo.", category: "cri" },
+                    { text: "Preocupo-me em como as pessoas serão afetadas e tento apoiar.", category: "soc" },
+                    { text: "Ajusto a estratégia rapidamente para minimizar perdas e vencer.", category: "neg" }
+                ]
+            }
+        ];
+
+        const profiles = {
+            tec: {
+                title: "Tecnológico & Analítico",
+                color: "#4F46E5",
+                description: "Você possui um perfil lógico, racional e focado na resolução de problemas. Gosta de entender como as coisas funcionam, analisar dados e utilizar a tecnologia para criar soluções eficientes e precisas.",
+                careers: ["Desenvolvedor de Software", "Cientista de Dados", "Engenheiro de Sistemas", "Analista de Cibersegurança", "Estatístico", "Engenheiro Civil"]
+            },
+            cri: {
+                title: "Criativo & Artístico",
+                color: "#EC4899",
+                description: "Você é movido pela imaginação, inovação e expressão visual ou conceitual. Não gosta de rotina rígida e prefere ambientes onde possa dar asas às suas ideias e transformar pensamentos em realidade tangível.",
+                careers: ["UI/UX Designer", "Diretor de Arte", "Arquiteto", "Redator / Copywriter", "Designer Gráfico", "Produtor Audiovisual"]
+            },
+            soc: {
+                title: "Social & Humano",
+                color: "#10B981",
+                description: "Seu ponto forte é a empatia e o desejo de impactar positivamente a vida das pessoas. Você se destaca em comunicação interpessoal, mediação de conflitos, ensino e cuidado com o próximo.",
+                careers: ["Psicólogo", "Professor / Educador", "Gestor de RH", "Médico / Enfermeiro", "Assistente Social", "Especialista em Sucesso do Cliente"]
+            },
+            neg: {
+                title: "Liderança & Negócios",
+                color: "#F59E0B",
+                description: "Você é focado em resultados, tem visão estratégica e capacidade natural de tomar decisões. Gosta de desafios, liderar equipes, negociar e encontrar oportunidades de crescimento e otimização financeira.",
+                careers: ["Administrador de Empresas", "Gerente de Projetos", "Empreendedor / Founder", "Diretor de Marketing", "Consultor Financeiro", "Executivo de Vendas"]
+            }
+        };
+
+        let currentQuestion = 0;
+        let scores = { tec: 0, cri: 0, soc: 0, neg: 0 };
+
+        const introScreen = document.getElementById("intro-screen");
+        const quizScreen = document.getElementById("quiz-screen");
+        const resultScreen = document.getElementById("result-screen");
+        const questionNumberEl = document.getElementById("question-number");
+        const progressPercentEl = document.getElementById("progress-percent");
+        const progressBarFillEl = document.getElementById("progress-bar-fill");
+        const questionTitleEl = document.getElementById("question-title");
+        const optionsListEl = document.getElementById("options-list");
+
+        function startQuiz() {
+            introScreen.style.display = "none";
+            quizScreen.style.display = "block";
+            quizScreen.classList.add("fade-in");
+            currentQuestion = 0;
+            scores = { tec: 0, cri: 0, soc: 0, neg: 0 };
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            const total = questions.length;
+            const progress = Math.round(((currentQuestion + 1) / total) * 100);
+
+            questionNumberEl.textContent = `Pergunta ${currentQuestion + 1} de ${total}`;
+            progressPercentEl.textContent = `${progress}%`;
+            progressBarFillEl.style.width = `${progress}%`;
+            questionTitleEl.textContent = q.title;
+
+            optionsListEl.innerHTML = "";
+            q.options.forEach((opt) => {
+                const card = document.createElement("div");
+                card.className = "option-card";
+                card.onclick = () => selectOption(opt.category);
+
+                card.innerHTML = `
+                    <span>${opt.text}</span>
+                    <div class="option-icon"><i class="fa-solid fa-check"></i></div>
+                `;
+                optionsListEl.appendChild(card);
+            });
+        }
+
+        function selectOption(category) {
+            scores[category]++;
+            currentQuestion++;
+
+            if (currentQuestion < questions.length) {
+                quizScreen.classList.remove("fade-in");
+                void quizScreen.offsetWidth;
+                quizScreen.classList.add("fade-in");
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            quizScreen.style.display = "none";
+            resultScreen.style.display = "block";
+            resultScreen.classList.add("fade-in");
+
+            let dominantCat = "tec";
+            let maxScore = -1;
+
+            for (const cat in scores) {
+                if (scores[cat] > maxScore) {
+                    maxScore = scores[cat];
+                    dominantCat = cat;
+                }
+            }
+
+            const profile = profiles[dominantCat];
+            document.getElementById("result-title").textContent = profile.title;
+            document.getElementById("result-title").style.color = profile.color;
+            document.getElementById("result-description").textContent = profile.description;
+
+            const careerTagsEl = document.getElementById("career-tags");
+            careerTagsEl.innerHTML = "";
+            profile.careers.forEach(career => {
+                const tag = document.createElement("span");
+                tag.className = "career-tag";
+                tag.textContent = career;
+                careerTagsEl.appendChild(tag);
+            });
+
+            const categoryBarsEl = document.getElementById("category-bars");
+            categoryBarsEl.innerHTML = "";
+            const totalQuestions = questions.length;
+
+            for (const cat in profiles) {
+                const p = profiles[cat];
+                const score = scores[cat];
+                const percentage = Math.round((score / totalQuestions) * 100);
+
+                const barItem = document.createElement("div");
+                barItem.className = "cat-bar-item";
+
+                barItem.innerHTML = `
+                    <div class="cat-header">
+                        <span>${p.title}</span>
+                        <span>${percentage}%</span>
+                    </div>
+                    <div class="cat-progress-bg">
+                        <div class="cat-progress-fill" style="background: ${p.color}; width: 0%;"></div>
+                    </div>
+                `;
+
+                categoryBarsEl.appendChild(barItem);
+
+                setTimeout(() => {
+                    barItem.querySelector(".cat-progress-fill").style.width = `${percentage}%`;
+                }, 100);
+            }
+        }
+
+        function restartQuiz() {
+            resultScreen.style.display = "none";
+            introScreen.style.display = "flex";
+            introScreen.classList.remove("fade-in");
+            void introScreen.offsetWidth;
+            introScreen.classList.add("fade-in");
+        }
+    </script>
+</body>
+</html>
